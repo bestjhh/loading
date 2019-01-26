@@ -1,0 +1,85 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>loading 实现偏方</title>
+    <style type="text/css">
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #progressbar{
+            position: fixed;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: white;
+            z-index: 99999;
+        }
+        #progressbar .border{
+            border: 1px solid #777;
+            width: 275px;
+            height: 14px;
+            padding: 1px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            border-radius: 7px;
+            transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);
+            -moz-transform: translate(-50%,-50%);
+            -webkit-transform: translate(-50%,-50%);
+        }
+        #progressbar .bar{
+            background-color: #73c944;
+            width: 50%;
+            height: 14px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        #progressbar .desc{
+            text-align: center;
+            font-size: 12px;
+            line-height: 24px;
+        }
+    </style>
+</head>
+<body>
+<div id="progressbar">
+    <div class="border">
+        <div class="bar">&nbsp;</div>
+        <div class="desc">正在加载...</div>
+    </div>
+</div>
+<script type="text/javascript">
+    var loading = function(){
+        var ct = document.getElementById("progressbar"),
+            desc = ct.getElementsByTagName("div"),
+            idx = 0, time = 500, bar = desc[1], desc = desc[2],timer;
+        bar.setValue = function(n){
+            this.style.width = n + "%";
+        };
+        var t=2;
+        void function(){
+            bar.setValue(idx += (100 - idx) * .2);
+            timer = setTimeout(arguments.callee, time += 100);
+            return t++
+        }();
+        console.log(t);
+        return {
+            remove: function(){
+                clearTimeout(timer);
+                desc.innerHTML = "加载完成";
+                bar.setValue(100);
+                setTimeout(function(){
+                    ct.parentNode.removeChild(ct);
+                },500);
+            }
+        };
+    }();
+    setTimeout(loading.remove, 10000);//加载完成
+</script>
+</body>
+</html>
