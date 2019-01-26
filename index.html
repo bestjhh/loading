@@ -61,13 +61,10 @@
         bar.setValue = function(n){
             this.style.width = n + "%";
         };
-        var t=2;
         void function(){
             bar.setValue(idx += (100 - idx) * .2);
             timer = setTimeout(arguments.callee, time += 100);
-            return t++
         }();
-        console.log(t);
         return {
             remove: function(){
                 clearTimeout(timer);
